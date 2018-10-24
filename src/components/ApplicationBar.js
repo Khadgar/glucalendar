@@ -10,8 +10,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import SideMenu from "./SideMenu";
 
-import {Link, withRouter, Redirect} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import axios from "axios";
 
 const styles = {
@@ -32,7 +33,8 @@ class ApplicationBar extends Component {
     super(props);
     this.state = {
       auth: false,
-      anchorEl: null
+      anchorEl: null,
+      left: false
     };
   }
 
@@ -42,6 +44,12 @@ class ApplicationBar extends Component {
 
   handleClose = () => {
     this.setState({anchorEl: null});
+  };
+
+  toggleDrawer = (side, open) => () => {
+    this.setState({
+      [side]: open
+    });
   };
 
   handleLogout = event => {
@@ -65,17 +73,18 @@ class ApplicationBar extends Component {
   };
 
   render() {
-    console.log("appbar props", this.props);
     const {auth, classes} = this.props;
     const {anchorEl} = this.state;
     const open = Boolean(anchorEl);
+
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer("left", true)}>
               <MenuIcon />
             </IconButton>
+            <SideMenu handleLogout={this.handleLogout} isLoggedIn={auth} open={this.state.left} toggleDrawer={this.toggleDrawer} />
             <Typography variant="h6" color="inherit" className={classes.grow}>
               <Link to="/" style={{textDecoration: "none", color: "#fff"}}>
                 GluCalendar
@@ -109,7 +118,7 @@ class ApplicationBar extends Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <Link to="/login" style={{textDecoration: "none", color: "#fff"}}>
+                  <Link to="/profile" style={{textDecoration: "none", color: "#fff", outline: "none"}}>
                     <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                   </Link>
                   <MenuItem onClick={this.handleLogout}>Logout</MenuItem>

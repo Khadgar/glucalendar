@@ -50,13 +50,10 @@ class SignIn extends Component {
     super();
     this.state = {
       username: "",
-      password: "",
-      redirectTo: null
+      password: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
-    console.log("login constructor");
   }
 
   handleChange(event) {
@@ -83,10 +80,6 @@ class SignIn extends Component {
             loggedIn: true,
             username: response.data.username
           });
-          // update the state to redirect to home
-          this.setState({
-            redirectTo: "/profile"
-          });
         }
       })
       .catch(error => {
@@ -96,12 +89,11 @@ class SignIn extends Component {
   }
 
   render() {
-    const {classes} = this.props;
-    if (this.state.redirectTo) {
-      return <Redirect to={{pathname: this.state.redirectTo}} />;
-    } else {
-      return (
-        <React.Fragment>
+    const {loggedIn, classes} = this.props;
+    return (
+      <React.Fragment>
+        {loggedIn && <Redirect to="/profile" />}
+        {!loggedIn && (
           <main className={classes.layout}>
             <Paper className={classes.paper}>
               <Avatar className={classes.avatar}>
@@ -125,9 +117,9 @@ class SignIn extends Component {
               </form>
             </Paper>
           </main>
-        </React.Fragment>
-      );
-    }
+        )}
+      </React.Fragment>
+    );
   }
 }
 
