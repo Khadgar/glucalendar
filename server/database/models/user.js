@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 mongoose.promise = Promise;
+const Settings = require("./settings");
 
 // Define userSchema
 const userSchema = new Schema({
@@ -30,6 +31,35 @@ userSchema.pre("save", function(next) {
     this.password = this.hashPassword(this.password);
     next();
   }
+});
+
+userSchema.post("save", function(doc) {
+  const newSettings = new Settings({
+    username: this.username,
+    unit: "mg/dL",
+    targetFasting: {
+      range: {
+        min: 80,
+        max: 130
+      }
+    },
+    targetBeforeMeal: {
+      range: {
+        min: 80,
+        max: 130
+      }
+    },
+    targetAfterMeal: {
+      range: {
+        min: 130,
+        max: 180
+      }
+    }
+  });
+  newSettings.save((err, savedUser) => {
+    if (err) return console.log("init settings error");
+    console.log("init settings saved");
+  });
 });
 
 const User = mongoose.model("User", userSchema);

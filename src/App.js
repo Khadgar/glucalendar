@@ -13,9 +13,21 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 
-const theme = createMuiTheme({
+const themeLight = createMuiTheme({
   typography: {
     useNextVariants: true
+  },
+  palette: {
+    type: "light"
+  }
+});
+
+const themeDark = createMuiTheme({
+  typography: {
+    useNextVariants: true
+  },
+  palette: {
+    type: "dark"
   }
 });
 
@@ -24,7 +36,6 @@ const styles = theme => ({
     flexGrow: 1
   }
 });
-
 
 //temporary stuff
 const NoMatch = ({location}) => (
@@ -35,6 +46,7 @@ const NoMatch = ({location}) => (
   </React.Fragment>
 );
 
+//temporary stuff
 const Home = () => (
   <React.Fragment>
     <Typography component="h2" variant="h1" gutterBottom>
@@ -48,19 +60,28 @@ class App extends Component {
     super();
     this.state = {
       loggedIn: false,
-      username: null,
-      loading: true
+      user: null,
+      loading: true,
+      theme: "light"
     };
 
     this.getUser = this.getUser.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.changeTheme = this.changeTheme.bind(this);
   }
 
   componentDidMount() {
+    console.log("componentDidMount Root");
     this.setState({
       loading: true
     });
     this.getUser();
+  }
+
+  changeTheme() {
+    this.setState({
+      theme: this.state.theme === "light" ? "dark" : "light"
+    });
   }
 
   updateUser(userObject) {
@@ -78,14 +99,14 @@ class App extends Component {
           console.log("Get User: There is a user saved in the server session: ");
           this.setState({
             loggedIn: true,
-            username: response.data.user.username,
+            user: response.data.user,
             loading: false
           });
         } else {
           console.log("Get user: no user");
           this.setState({
             loggedIn: false,
-            username: null,
+            user: null,
             loading: false
           });
         }
@@ -98,11 +119,12 @@ class App extends Component {
 
   render() {
     const {classes} = this.props;
+
     return (
       <React.Fragment>
-        <CssBaseline />
-        <MuiThemeProvider theme={theme}>
-          <ApplicationBar auth={this.state.loggedIn} updateUser={this.updateUser} />
+        <MuiThemeProvider theme={this.state.theme === "light" ? themeLight : themeDark}>
+          <CssBaseline />
+          <ApplicationBar auth={this.state.loggedIn} updateUser={this.updateUser} user={this.state.user} changeTheme={this.changeTheme} currentTheme={this.state.theme} />
           {this.state.loading ? (
             <div className={classes.progress}>
               <LinearProgress color="secondary" />
@@ -111,7 +133,7 @@ class App extends Component {
             <div className="App">
               <Switch>
                 <Route path="/login" render={props => <SignInPage {...props} updateUser={this.updateUser} loggedIn={this.state.loggedIn} />} />
-                <Route path="/profile" render={props => <Profile {...props} loggedIn={this.state.loggedIn} />} />
+                <Route path="/profile" render={props => <Profile {...props} loggedIn={this.state.loggedIn} user={this.state.user} />} />
                 <Route exact path="/" component={Home} />
                 <Route component={NoMatch} />
               </Switch>

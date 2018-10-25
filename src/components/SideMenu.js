@@ -29,36 +29,46 @@ class SideMenu extends Component {
   createMenuItems() {
     return (
       <List>
-        <ListItem button key={"home"}>
-          <ListItemIcon>
-            <Home />
-          </ListItemIcon>
-          <ListItemText primary={"Home"} />
-        </ListItem>
-        <ListItem button key={"profile"}>
-          <ListItemIcon>
-            <AccountCircle />
-          </ListItemIcon>
-          <ListItemText primary={"Profile"} />
-        </ListItem>
-        <ListItem button key={"add_new_result"}>
-          <ListItemIcon>
-            <NoteAdd />
-          </ListItemIcon>
-          <ListItemText primary={"Add New Result"} />
-        </ListItem>
-        <ListItem button key={"history"}>
-          <ListItemIcon>
-            <History />
-          </ListItemIcon>
-          <ListItemText primary={"History"} />
-        </ListItem>
-        <ListItem button key={"settings"}>
-          <ListItemIcon>
-            <Settings />
-          </ListItemIcon>
-          <ListItemText primary={"Settings"} />
-        </ListItem>
+        <Link to="/" style={{textDecoration: "none", color: "#fff"}}>
+          <ListItem button key={"home"}>
+            <ListItemIcon>
+              <Home />
+            </ListItemIcon>
+            <ListItemText primary={"Home"} />
+          </ListItem>
+        </Link>
+        <Link to="/profile" style={{textDecoration: "none", color: "#fff"}}>
+          <ListItem button key={"profile"}>
+            <ListItemIcon>
+              <AccountCircle />
+            </ListItemIcon>
+            <ListItemText primary={"Profile"} />
+          </ListItem>
+        </Link>
+        <Link to="/add-new" style={{textDecoration: "none", color: "#fff"}}>
+          <ListItem button key={"add_new_result"}>
+            <ListItemIcon>
+              <NoteAdd />
+            </ListItemIcon>
+            <ListItemText primary={"Add New Result"} />
+          </ListItem>
+        </Link>
+        <Link to="/history" style={{textDecoration: "none", color: "#fff"}}>
+          <ListItem button key={"history"}>
+            <ListItemIcon>
+              <History />
+            </ListItemIcon>
+            <ListItemText primary={"History"} />
+          </ListItem>
+        </Link>
+        <Link to="/settings" style={{textDecoration: "none", color: "#fff"}}>
+          <ListItem button key={"settings"}>
+            <ListItemIcon>
+              <Settings />
+            </ListItemIcon>
+            <ListItemText primary={"Settings"} />
+          </ListItem>
+        </Link>
         <Divider />
         {this.props.isLoggedIn && (
           <ListItem button key={"logout"}>
