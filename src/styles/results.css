@@ -1,0 +1,20 @@
+.gridRow{
+    display: flex;
+    flex-direction: row;
+}
+
+.gridCol{
+    width: 100px;
+}
+
+.rowName{
+    margin-right: 12px;
+    display: flex;
+    width:130px;
+    justify-content: flex-end;
+    border-right: 1px black solid;
+    padding-right: 4px;
+}
+.headerRow{
+    border-bottom: 1px black solid;
+}

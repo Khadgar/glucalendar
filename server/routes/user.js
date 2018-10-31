@@ -85,13 +85,23 @@ router.post("/add-record", (req, res) => {
 });
 
 router.post("/get-records", (req, res) => {
+  //get the records and the corresponding user settings
   console.log("get records");
   const {username} = req.body;
-  Record.find(username ? {username: username} : {}, (err, records) => {
+  Settings.find(username ? {username: username} : {}, (err, settings) => {
     if (err) {
-      console.log("record.js post error: ", err);
-    } else if (records) {
-      res.json(records);
+      console.log("settings.js post error: ", err);
+    } else if (settings) {
+      Record.find(username ? {username: username} : {}, (err, records) => {
+        if (err) {
+          console.log("record.js post error: ", err);
+        } else if (records) {
+          res.json({
+            records: records,
+            settings: settings
+          });
+        }
+      });
     }
   });
 });
