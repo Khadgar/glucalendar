@@ -94,7 +94,6 @@ class App extends Component {
       .get("/user")
       .then(response => {
         console.log("Get user response: ");
-        console.log(response.data);
         if (response.data.user) {
           console.log("Get User: There is a user saved in the server session: ");
           this.setState({
