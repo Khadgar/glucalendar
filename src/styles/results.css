@@ -18,3 +18,11 @@
 .headerRow{
     border-bottom: 1px black solid;
 }
+
+.resultCol.OK{
+    color: #00c853;
+}
+
+.resultCol.NOK{
+    color: #d50000;
+}

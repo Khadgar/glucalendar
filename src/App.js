@@ -8,6 +8,7 @@ import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import {Route, Switch} from "react-router-dom";
 // import routes from "./components/Routes"; collect routes here in the future
 import SignInPage from "./components/SignIn";
+import AddNew from "./components/AddNew";
 import Profile from "./components/Profile";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -133,6 +134,7 @@ class App extends Component {
               <Switch>
                 <Route path="/login" render={props => <SignInPage {...props} updateUser={this.updateUser} loggedIn={this.state.loggedIn} />} />
                 <Route path="/profile" render={props => <Profile {...props} loggedIn={this.state.loggedIn} user={this.state.user} />} />
+                <Route path="/add-new" render={props => <AddNew {...props} loggedIn={this.state.loggedIn} user={this.state.user} />} />
                 <Route exact path="/" component={Home} />
                 <Route component={NoMatch} />
               </Switch>

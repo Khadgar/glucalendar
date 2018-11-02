@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 import MUIDataTable from "mui-datatables";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
 
 var moment = require("moment");
 
@@ -31,6 +32,116 @@ class Results extends Component {
       user: this.props.user
     };
   }
+
+  columns = [
+    {
+      name: "Dates"
+    },
+    {
+      name: "0-2",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "2-4",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "4-6",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "6-8",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "8-10",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "10-12",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "12-14",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "14-16",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "16-18",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "18-20",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "20-22",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    },
+    {
+      name: "22-24",
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return this.resultColFormatter(value);
+        }
+      }
+    }
+  ];
+
+  resultColFormatter = result => {
+    return (
+      <Tooltip title={`Note: ${result.note}`}>
+        <div className={`resultCol ${result.eval}`}>{result.value}</div>
+      </Tooltip>
+    );
+  };
 
   getMuiTheme = () =>
     createMuiTheme({
@@ -83,17 +194,58 @@ class Results extends Component {
     return gridData;
   };
 
+  evalResult = (note, result, settings) => {
+    let evaluation = "OK";
+    switch (note) {
+      case "fasting":
+        if (result < settings.target_fasting.range.min || result > settings.target_fasting.range.max) {
+          evaluation = "NOK";
+        }
+        break;
+      case "after lunch":
+        if (result < settings.target_after_meal.range.min || result > settings.target_after_meal.range.max) {
+          evaluation = "NOK";
+        }
+        break;
+      case "before lunch":
+        if (result < settings.target_before_meal.range.min || result > settings.target_before_meal.range.max) {
+          evaluation = "NOK";
+        }
+        break;
+      case "after meal":
+        if (result < settings.target_after_meal.range.min || result > settings.target_after_meal.range.max) {
+          evaluation = "NOK";
+        }
+        break;
+      case "before meal":
+        if (result < settings.target_before_meal.range.min || result > settings.target_before_meal.range.max) {
+          evaluation = "NOK";
+        }
+        break;
+      default:
+        break;
+    }
+    return evaluation;
+  };
+
   transformData = (records = [], settings) => {
     records = records.sort((recordA, recordB) => moment(recordB.time).unix() - moment(recordA.time).unix());
     let resultGroups = this.groupBy(records, record => moment(record.time).format("ll"));
     for (let resultGroupKey of resultGroups.keys()) {
-      let mappedValues = resultGroups.get(resultGroupKey).map(group => {
-        return {
-          note: group.note,
-          result: Number(group.result),
-          time: moment(group.time)
-        };
-      });
+      let mappedValues = resultGroups
+        .get(resultGroupKey)
+        .map(group => {
+          return {
+            note: group.note,
+            result: {
+              value: Number(group.result),
+              note: group.note,
+              eval: this.evalResult(group.note, Number(group.result), settings[0])
+            },
+            time: moment(group.time)
+          };
+        })
+        .sort((a, b) => b.time.unix() - a.time.unix());
       resultGroups.set(resultGroupKey, mappedValues);
     }
     return resultGroups;
@@ -121,14 +273,13 @@ class Results extends Component {
 
   render() {
     const gridData = this.transformData(this.state.records, this.state.settings);
-    //const {classes} = this.props;
     return (
       <React.Fragment>
         <MuiThemeProvider theme={this.getMuiTheme()}>
           <MUIDataTable
             title={"List of measurments"}
             data={this.generateDataForGrid(gridData)}
-            columns={["Date", "0-2", "2-4", "4-6", "6-8", "8-10", "10-12", "12-14", "14-16", "16-18", "18-20", "20-22", "22-24"]}
+            columns={this.columns}
             options={{
               sort: false,
               filterType: "dropdown",
