@@ -9,7 +9,7 @@ const Settings = require("../database/models/settings");
 router.post("/", (req, res) => {
   console.log("user signup");
 
-  const {username, password} = req.body;
+  const {username, password, fullname} = req.body;
   // ADD VALIDATION
   User.findOne({username: username}, (err, user) => {
     if (err) {
@@ -21,7 +21,8 @@ router.post("/", (req, res) => {
     } else {
       const newUser = new User({
         username: username,
-        password: password
+        password: password,
+        fullname: fullname
       });
       newUser.save((err, savedUser) => {
         if (err) return res.json(err);

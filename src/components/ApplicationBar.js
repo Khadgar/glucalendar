@@ -114,6 +114,11 @@ class ApplicationBar extends Component {
                     Login
                   </Button>
                 </Link>
+                <Link to="/register" style={{textDecoration: "none", color: "#fff"}}>
+                  <Button color="inherit" to="/register">
+                    Register
+                  </Button>
+                </Link>
               </div>
             )}
             {auth && (

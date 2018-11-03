@@ -7,7 +7,8 @@ const Settings = require("./settings");
 // Define userSchema
 const userSchema = new Schema({
   username: {type: String, unique: false, required: false},
-  password: {type: String, unique: false, required: false}
+  password: {type: String, unique: false, required: false},
+  fullname: {type: String, unique: false, required: false}
 });
 
 // Define schema methods
@@ -34,7 +35,7 @@ userSchema.pre("save", function(next) {
 });
 
 userSchema.post("save", function(doc) {
-  const newSettings = new Settings({
+  const newSettings = {
     username: this.username,
     unit: "mg/dL",
     targetFasting: {
@@ -55,11 +56,23 @@ userSchema.post("save", function(doc) {
         max: 180
       }
     }
-  });
-  newSettings.save((err, savedUser) => {
-    if (err) return console.log("init settings error");
-    console.log("init settings saved");
-  });
+  };
+
+  Settings.findOneAndUpdate(
+    {username: this.username},
+    newSettings,
+    {
+      new: true,
+      upsert: true
+    },
+    (err, settings) => {
+      if (err) {
+        console.log("error during init settings for new user");
+      } else {
+        console.log("init settings saved");
+      }
+    }
+  );
 });
 
 const User = mongoose.model("User", userSchema);

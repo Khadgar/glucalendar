@@ -6,7 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Drawer from "@material-ui/core/Drawer";
-import {Home, NoteAdd, History, Settings, Fingerprint, PowerSettingsNew, AccountCircle} from "@material-ui/icons";
+import {Home, NoteAdd, History, Settings, Fingerprint, PowerSettingsNew, AccountCircle, PersonAdd} from "@material-ui/icons";
 import Divider from "@material-ui/core/Divider";
 import {Link, withRouter} from "react-router-dom";
 
@@ -85,6 +85,16 @@ class SideMenu extends Component {
                 <Fingerprint />
               </ListItemIcon>
               <ListItemText primary={"Login"} />
+            </ListItem>
+          </Link>
+        )}
+        {!this.props.isLoggedIn && (
+          <Link to="/register" style={{textDecoration: "none", color: "#fff"}}>
+            <ListItem button key={"register"}>
+              <ListItemIcon>
+                <PersonAdd />
+              </ListItemIcon>
+              <ListItemText primary={"Register"} />
             </ListItem>
           </Link>
         )}
