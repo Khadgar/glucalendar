@@ -94,7 +94,7 @@ class AddNew extends Component {
   componentDidMount() {}
 
   render() {
-    const {classes, loggedIn} = this.props;
+    const {classes, loggedIn, showTitle} = this.props;
     if (!loggedIn) {
       return <Redirect to={{pathname: "/"}} />;
     } else {
@@ -102,9 +102,11 @@ class AddNew extends Component {
         <React.Fragment>
           <main className={classes.layout}>
             <Paper className={classes.paper}>
-              <Typography component="h1" variant="h5">
-                Add new measurment
-              </Typography>
+              {showTitle && (
+                <Typography component="h1" variant="h5">
+                  Add new measurment
+                </Typography>
+              )}
               <form className={classes.form}>
                 <FormControl margin="normal" required fullWidth>
                   <Input required id="result" name="result" label="Number" value={this.state.result} type="number" onChange={this.handleChange} />

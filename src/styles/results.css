@@ -26,3 +26,11 @@
 .resultCol.NOK{
     color: #d50000;
 }
+
+.dataGrid{
+    margin-top:12px;
+}
+
+.addNewBtn{
+    margin:4px;
+}

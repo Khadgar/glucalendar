@@ -136,7 +136,7 @@ class App extends Component {
               <Switch>
                 <Route path="/login" render={props => <SignInPage {...props} updateUser={this.updateUser} loggedIn={this.state.loggedIn} />} />
                 <Route path="/profile" render={props => <Profile {...props} loggedIn={this.state.loggedIn} user={this.state.user} />} />
-                <Route path="/add-new" render={props => <AddNew {...props} loggedIn={this.state.loggedIn} user={this.state.user} />} />
+                <Route path="/add-new" render={props => <AddNew {...props} showTitle loggedIn={this.state.loggedIn} user={this.state.user} />} />
                 <Route path="/settings" render={props => <Settings {...props} loggedIn={this.state.loggedIn} user={this.state.user} />} />
                 <Route path="/register" render={props => <Register {...props} updateUser={this.updateUser} loggedIn={this.state.loggedIn} user={this.state.user} />} />
                 <Route exact path="/" component={Home} />

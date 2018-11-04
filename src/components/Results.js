@@ -276,17 +276,19 @@ class Results extends Component {
     return (
       <React.Fragment>
         <MuiThemeProvider theme={this.getMuiTheme()}>
-          <MUIDataTable
-            title={"List of measurments"}
-            data={this.generateDataForGrid(gridData)}
-            columns={this.columns}
-            options={{
-              sort: false,
-              filterType: "dropdown",
-              selectableRows: false,
-              responsive: "scroll"
-            }}
-          />
+          <div className="dataGrid">
+            <MUIDataTable
+              title={"List of measurments"}
+              data={this.generateDataForGrid(gridData)}
+              columns={this.columns}
+              options={{
+                sort: false,
+                filterType: "dropdown",
+                selectableRows: false,
+                responsive: "scroll"
+              }}
+            />
+          </div>
         </MuiThemeProvider>
       </React.Fragment>
     );
